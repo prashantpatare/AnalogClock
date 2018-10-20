@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+
+<html>
+    <title> Ananlog Clock</title>
+    <body>
+
+        <canvas id="canvasclock" width="200" height="200" style="background-color:black"></canvas>
+
+        <script>
+             var canvas = document.getElementById("canvasclock");
+             var context = canvas.getContext("2d");
+
+            //configuration parameters for clock's physical properties
+            const cntr_x=100,cntr_y=100;
+            const hour_hand_len = 30;
+            const minute_hand_len = 50
+            const second_hand_len = 70;
+            const clock_radius = 75;
+
+            //clocks cordinates
+            var hour_pos, minute_pos, second_pos;
+            var totalSeconds=0;
+
+            const angl_offset = 360/60;
+
+            function findPos(cycle_intrvl_secs, hand_len){
+                angl = (360/cycle_intrvl_secs) * (totalSeconds % cycle_intrvl_secs);
+                angl_red = toRadian(angl);
+                sin = Math.sin(angl_red)*hand_len;
+                cos = Math.cos(angl_red)*hand_len;
+                x = cntr_x + cos;
+                y = cntr_y + sin; 
+
+                return {
+                    x : x,
+                    y : y
+                };
+            }
+
+            function drawClock(){
+                //empty the canvas
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.strokeStyle = 'white';
+                context.lineWidth = 1;
+                context.beginPath();
+                context.arc(cntr_x, cntr_y, clock_radius, 0, 2 * Math.PI);
+                context.stroke();
+
+                //draw hour hand
+                drawHand('red', 2.5, hour_pos);
+                //draw minute hand
+                drawHand('blue', 2, minute_pos);
+                //draw second hand
+                drawHand('green', 1, second_pos);
+            }
+
+            function drawHand(color, lineWidth, pos){
+                context.strokeStyle = color;
+                context.lineWidth =lineWidth;
+                context.beginPath();
+                context.moveTo(cntr_x, cntr_y);
+                context.lineTo(pos.x, pos.y);
+                context.stroke();
+            }
+
+            setInterval(function(){
+                totalSeconds++;
+                // update Second Hand positions
+                second_pos = findPos(60, second_hand_len);
+                drawClock();
+            } , 1000);
+
+            setInterval(function(){
+                 // update Minute Hand positions
+                 minute_pos = findPos(3600, minute_hand_len);
+            } , 60000);
+
+            setInterval(function(){
+               //  update Hour Hand positions
+                hour_pos = findPos(12*3600, hour_hand_len);
+            } , 3600000/5);
+
+            function toRadian(degrees){
+                var inRadian = degrees*Math.PI/180;
+
+                //adjustment for starting
+                return inRadian +(Math.PI * 1.5);
+            }
+
+            //initial setups
+            var dt = new Date();
+            totalSeconds = dt.getSeconds() + (60 * dt.getMinutes()) + (60 * 60 * dt.getHours());
+
+            second_pos = findPos(60, second_hand_len);
+            minute_pos = findPos(3600, minute_hand_len);
+            hour_pos = findPos(12*3600, hour_hand_len);
+            drawClock();
+
+        </script>
+    </body>
+</html>
