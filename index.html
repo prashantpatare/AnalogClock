@@ -1,10 +1,24 @@
 <!DOCTYPE HTML>
 
 <html>
-    <title> Ananlog Clock</title>
+    <title> Ananlog Clock </title>
     <body>
-
         <canvas id="canvasclock" width="200" height="200" style="background-color:black"></canvas>
+        
+<script>
+window.onload = function() {
+  var incrementSecond = function () {
+    window.secondsPassed += 1;
+    console.log('+1 sec, now we have', window.secondsPassed);
+  }
+  
+  window.document.title = window.secondsPassed;
+   document.title = window.secondsPassed;
+
+  window.secondsPassed = 0;
+  window.myTimer = setInterval(incrementSecond, 1000);
+}
+</script>        
 
         <script>
              var canvas = document.getElementById("canvasclock");
