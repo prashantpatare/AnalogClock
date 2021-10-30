@@ -10,10 +10,11 @@ window.onload = function() {
   var incrementSecond = function () {
     window.secondsPassed += 1;
     console.log('+1 sec, now we have', window.secondsPassed);
+   window.document.title = window.secondsPassed;
+   document.title = "hello" + window.secondsPassed;
   }
   
-  window.document.title = window.secondsPassed;
-   document.title = window.secondsPassed;
+
 
   window.secondsPassed = 0;
   window.myTimer = setInterval(incrementSecond, 1000);
