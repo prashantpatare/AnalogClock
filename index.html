@@ -10,8 +10,11 @@ window.onload = function() {
   var incrementSecond = function () {
     window.secondsPassed += 1;
     console.log('+1 sec, now we have', window.secondsPassed);
-   window.document.title = "there" +  window.secondsPassed;
-   document.title = "hello" + window.secondsPassed;
+    let s = window.secondsPassed;
+    h = Math.floor(s/3600);
+    m = Math.floor( (s - h*3600) / 60);
+    s = s - h*3600 - m*60;
+    document.title = "Stopwatch "+ h + ':' + m + ':' + s;
   }
   
 
